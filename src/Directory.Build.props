@@ -1,0 +1,33 @@
+<Project>
+  <Import Project="..\Directory.Build.props" Condition="Exists('..\Directory.Build.props')"/>
+
+  <PropertyGroup>
+    <ProjectTargetFrameworks>netstandard2.1</ProjectTargetFrameworks>
+    <PackageIcon Condition="Exists('icon.png')">icon.png</PackageIcon>
+  </PropertyGroup>
+  <ItemGroup Condition="Exists('icon.png')">
+    <None Include="..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild Condition="$(Configuration) == 'Release'">true</GeneratePackageOnBuild>
+    <PackageOutputPath>$(RepositoryRoot)/artifacts</PackageOutputPath>
+    <Title>$(MSBuildProjectName)</Title>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <!-- NU5048: PackageIconUrl is no longer supported -->
+    <!-- NU5105: Ignore warning about semver -->
+    <NoWarn>$(NoWarn);NU5048;NU5105</NoWarn>
+    <!-- Ensure that the url to the repository is published as part of the package -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Embed source files that are not tracked by the source control manager in the PDB. -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Ensure that pdb's can be added to nuget packages -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <!-- Default to allowing source link -->
+    <EnableSourceLink Condition="$(EnableSourceLink) == ''">true</EnableSourceLink>
+  </PropertyGroup>
+</Project>
