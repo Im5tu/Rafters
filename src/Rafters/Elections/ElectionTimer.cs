@@ -40,6 +40,8 @@ namespace Rafters.Elections
                     var delay = _random.Next(MinimumElectionTimeoutInMS, MaximumElectionTimeoutInMS);
                     Debug.WriteLine("Next election in " + delay + "ms");
                     var electionTimeoutTask = Task.Delay(TimeSpan.FromMilliseconds(delay), cancellationToken);
+                    // TODO :: Change this so that streams register with the timer, we can then re-elect any stream that's timed out.
+                    //         This is so that we isolate leader failures to a single stream.
                     var completedTask = await Task.WhenAny(electionTimeoutTask, _resetTimer.Task).ConfigureAwait(false);
 
                     if (!_disposed)
